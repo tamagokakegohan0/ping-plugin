@@ -9,23 +9,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PingPlugin extends JavaPlugin {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void onEnable() {
+        getCommand("ping").setExecutor(this); // ← これ追加
+    }
 
-        if (!command.getName().equalsIgnoreCase("ping")) return false;
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
             sender.sendMessage("プレイヤーのみ使用できます");
             return true;
         }
 
-        // 引数なし → 自分のPing
+        // 自分のPing
         if (args.length == 0) {
-            int ping = player.getPing();
-            player.sendMessage("§fping:" + ping + "ms");
+            player.sendMessage("§fping:" + player.getPing() + "ms");
             return true;
         }
 
-        // 引数あり → 他人のPing（権限チェック）
+        // 権限チェック
         if (!player.hasPermission("tamakake.admin")) {
             player.sendMessage("§c権限がありません");
             return true;
@@ -37,8 +39,7 @@ public class PingPlugin extends JavaPlugin {
             return true;
         }
 
-        int ping = target.getPing();
-        player.sendMessage("§f" + target.getName() + " ping:" + ping + "ms");
+        player.sendMessage("§f" + target.getName() + " ping:" + target.getPing() + "ms");
 
         return true;
     }

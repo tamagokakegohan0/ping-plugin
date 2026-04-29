@@ -1,6 +1,6 @@
 name: PingPlugin
 version: 1.0
-main: tamakake.ping
+main: tamakake.ping.PingPlugin
 api-version: 1.20
 
 commands:
